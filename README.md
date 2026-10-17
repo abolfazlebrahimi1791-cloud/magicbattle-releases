@@ -14,7 +14,7 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 | Client | Since | Notes |
 |---|---|---|
-| Android (`MagicBattle-vX.Y.apk`) | v2.x | native accessible UI, Prism speech, in-app updater |
+| Android (`MagicBattle-vX.Y.apk`) | v2.x | native accessible UI, Prism speech, in-app updater; since v3.4 a full **AOT** build (arm64-v8a + x86_64) |
 | Windows (`MagicBattle-Windows-vX.Y.zip`) | v3.3 | SDL3 graphics + SDL3_mixer sound, Prism (SAPI) speech, the update check announces the download link only — it never auto-downloads |
 
 ## Install / Update
@@ -32,4 +32,7 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 ## Latest release
 
+- **v3.4** — Windows sound fixed (the missing `MIX_Init()` call kept the whole audio stack silent) and full `game.log` audio diagnostics; Windows menus are now 1:1 with the Kotlin build (9-item main menu + the full Options screen: auto-update toggle, manual update check with the spoken download link, rate/pitch/volume, Test, Prism on/off, voice picker, Save/Cancel); Android is a full **AOT** build (versionCode 25, versionName 3.4, installs over every older build); no obfuscation anywhere. Hashes:
+  - `MagicBattle-v3.4.apk` → sha256 `70e4c90147436b4d9cc9d4e688377c32763975c8847da6be2e80db1bc8a81d66`
+  - `MagicBattle-Windows-v3.4.zip` → sha256 `76e81c973d17815219ec69661efb4d4c43ddcd46e8cd8dd97a2169fadb14b7f6`
 - **v3.3** — first C# / .NET 10 release: Android client (versionCode 24, installs over 3.2 and earlier 3.3 builds; the 31 game sounds now ship as plain APK assets) + the first Windows client. Updater hash now comes from the GitHub API (sha256).
