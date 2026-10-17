@@ -32,4 +32,4 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 ## Latest release
 
-- **v3.3** — first C# / .NET 10 release: Android client (versionCode 23, installs over 3.2) + the first Windows client. Updater hash now comes from the GitHub API (sha256).
+- **v3.3** — first C# / .NET 10 release: Android client (versionCode 24, installs over 3.2 and earlier 3.3 builds; the 31 game sounds now ship as plain APK assets) + the first Windows client. Updater hash now comes from the GitHub API (sha256).
