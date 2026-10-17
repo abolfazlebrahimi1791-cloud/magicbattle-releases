@@ -14,25 +14,32 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 | Client | Since | Notes |
 |---|---|---|
-| Android (`MagicBattle-vX.Y.apk`) | v2.x | native accessible UI, Prism speech, in-app updater; since v3.4 a full **AOT** build (arm64-v8a + x86_64) |
-| Windows (`MagicBattle-Windows-vX.Y.zip`) | v3.3 | SDL3 graphics + SDL3_mixer sound, Prism (SAPI) speech, the update check announces the download link only — it never auto-downloads |
+| **Android (Kotlin)** | v1.x | `MagicBattle-vX.Y.apk` — the original Kotlin app, versionCode 26 at v3.5; TalkBack + Prism speech; downloads and installs updates itself (resumable, digest-verified) |
+| **Windows (C# / .NET 10)** | v3.3 | `MagicBattle-Windows-vX.Y.zip` — SDL3 graphics + SDL3_mixer sound, Prism speech; v3.5 ships as a **ReadyToRun AOT single-file** exe; Windows only *announces* the download link, it never downloads in place |
 
-## Install / Update
+## Current release: v3.5
+
+| Asset | Size | sha256 (GitHub API digest) |
+|---|---|---|
+| `MagicBattle-v3.5.apk` | 14.1 MB | `8cc678a8530b810e301f2f1cf17e5b54d7e4f0a57bed71c3aa0196c5562bea68` |
+| `MagicBattle-Windows-v3.5.zip` | 20.7 MB | `989dc2c40d8d2af6482348623cd5d93dc24c699fbf0fb3c5ea68fc9381909e30` |
+
+- **v3.5 Android = Kotlin again** (versionCode 26 / versionName 3.5) — the gradle build with the spectator protocol fix (`spectator` instead of `on`), the slimmer updater and the screen reworks that had not shipped yet. Installs over every previous build (Kotlin 22, C# 23/24/25) — same signing key.
+- **v3.5 Windows = ReadyToRun AOT** — self-contained trimmed single-file `MagicBattle.exe` with native R2R code baked in at publish time (faster startup). The SDL3/SDL3_mixer/codec DLLs and `prism.dll` must stay next to the exe; `sounds/` is a plain folder like before.
+- True **NativeAOT** Windows builds are produced by the source repo's `windows-native-aot` GitHub Actions workflow (a windows-x64 NativeAOT binary can only be built on Windows itself — .NET does not support cross-OS NativeAOT).
+- The **server is not published here** — it is C# / .NET 10 and ships only in the private source repo (`v3.5-server` release: linux-x64 NativeAOT binary + win-x64 self-contained), same WebSocket protocol and a 100% compatible `accounts.db`.
+
+## Install
 
 ### Android
-
-1. Download the newest `MagicBattle-vX.Y.apk` from [Releases](https://github.com/abolfazlebrahimi1791-cloud/magicbattle-releases/releases), **or**
-2. simply start the app — the spoken "Checking for updates..." page runs first and offers the download + install automatically when a newer release exists (v2.14+).
+1. Download `MagicBattle-v3.5.apk` from the latest release (or let the installed app do it — it speaks the changelog, verifies the sha256 digest and resumes broken downloads).
+2. Allow "install unknown apps" for the source app if asked.
+3. Install — it updates the existing game in place.
 
 ### Windows
+1. Download `MagicBattle-Windows-v3.5.zip` and unzip it anywhere.
+2. Run `MagicBattle.exe`. Keep the DLLs and the `sounds/` folder next to it.
 
-1. Download the newest `MagicBattle-Windows-vX.Y.zip` from [Releases](https://github.com/abolfazlebrahimi1791-cloud/magicbattle-releases/releases).
-2. Unzip anywhere and run `MagicBattle.exe`.
-3. When a new version is released, the client announces the version and the direct download link (in speech + message history).
+## Older releases
 
-## Latest release
-
-- **v3.4** — Windows sound fixed (the missing `MIX_Init()` call kept the whole audio stack silent) and full `game.log` audio diagnostics; Windows menus are now 1:1 with the Kotlin build (9-item main menu + the full Options screen: auto-update toggle, manual update check with the spoken download link, rate/pitch/volume, Test, Prism on/off, voice picker, Save/Cancel); Android is a full **AOT** build (versionCode 25, versionName 3.4, installs over every older build); no obfuscation anywhere. Hashes:
-  - `MagicBattle-v3.4.apk` → sha256 `70e4c90147436b4d9cc9d4e688377c32763975c8847da6be2e80db1bc8a81d66`
-  - `MagicBattle-Windows-v3.4.zip` → sha256 `76e81c973d17815219ec69661efb4d4c43ddcd46e8cd8dd97a2169fadb14b7f6`
-- **v3.3** — first C# / .NET 10 release: Android client (versionCode 24, installs over 3.2 and earlier 3.3 builds; the 31 game sounds now ship as plain APK assets) + the first Windows client. Updater hash now comes from the GitHub API (sha256).
+Older tags (v1.x – v3.4) stay available in the Releases list. Since v3.3 the Windows client is the C# port; the v3.3/v3.4 Android APKs were the experimental C# build (versionCode 23/24) — v3.5 returns to the original Kotlin app (versionCode 26), which is the recommended client.
