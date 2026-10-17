@@ -14,26 +14,25 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 | Client | Since | Notes |
 |---|---|---|
-| **Android (Kotlin)** | v1.x | `MagicBattle-vX.Y.apk` — the original Kotlin app, versionCode 28 at v3.7; TalkBack + Prism speech; downloads and installs updates itself (resumable, digest-verified) |
-| **Windows (C# / .NET 10)** | v3.3 | `MagicBattle-Windows-vX.Y.zip` — SDL3 graphics + SDL3_mixer sound, Prism speech; v3.7 ships as a **ReadyToRun AOT single-file** exe PLUS a true **NativeAOT** build produced by the repo's GitHub Actions workflow |
+| **Android (Kotlin)** | v1.x | `MagicBattle-vX.Y.apk` — the original Kotlin app, versionCode 29 at v3.8; TalkBack + Prism speech; downloads and installs updates itself (resumable, digest-verified) |
+| **Windows (C# / .NET 10)** | v3.3 | `MagicBattle-Windows-vX.Y.zip` — SDL3 graphics + SDL3_mixer sound, Prism speech; v3.8 ships as a **ReadyToRun AOT single-file** exe PLUS a true **NativeAOT** build produced by the repo's GitHub Actions workflow |
 
-## Current release: v3.7
+## Current release: v3.8
 
 | Asset | Size | sha256 (GitHub API digest) |
 |---|---|---|
-| `MagicBattle-v3.7.apk` | 15.4 MB | `f6f52073406278c8b6de7b28aec9bb67c1498560778c1ddc19572676eb5f4b46` |
-| `MagicBattle-Windows-v3.7.zip` | 20.8 MB | `a87caf7b2d157dd7bfa4d65d4e76854515d283b59b546118ea258c60430d6d22` |
-| `MagicBattle-Windows-NativeAOT-v3.7.zip` | 13.1 MB | `976276aa719bd8ae3a4d67c5c0114ecd162c8476ab4a6726001f2638bc31f5af` |
+| `MagicBattle-v3.8.apk` | 15.4 MB | `86981312d9addc6957ff2e4d90701ba7343bc87a69ccdc31948ac3eb18e4d717` |
+| `MagicBattle-Windows-v3.8.zip` | 16.5 MB | `e0113fdded1593406b73ad5a74b223ad7c1a56d78ac0741a93f32edf8568a3b0` |
+| `MagicBattle-Windows-NativeAOT-v3.8.zip` | 13.1 MB | `2155b5928aec4332aa500aec9fe911e77c6905f4d206ac9e46dbaf1afb355db8` |
 
-**v3.7 highlights**
+**v3.8 highlights**
 
-- **Admin management stored in the accounts DB** (`users.is_admin`) — admins survive restarts and the DB stays 100% python-compatible; the **first account ever registered is automatically an admin**.
-- **Add / remove admin** — the control panel (F11 on Windows, Control Panel on Android) gets an **Admins** section: pick an admin -> remove. Every promote / demote **kicks the target once** with the reason ("You are now an admin." / "You are no longer an admin.") and the **kick sound** — so they know it took effect.
-- **Temporary bans (minutes)** — same hardware-fingerprint coverage as a full ban, but it **expires on its own**; enter any number of minutes (up to 2 days) and the **ban list shows the time left** (permanent bans are marked). Expired bans disappear without any admin action.
-- **Staff sounds** — the kicked player hears `kick.ogg`; the banned player hears `ban.ogg` (again when their login/register is denied); when anyone is **unbanned, EVERY player present on the server hears `unban.ogg`** plus an announcement of who came back.
-- Server CLI stays simple: `MagicBattle.Server 7777` (positional port) or just `MagicBattle.Server` (default 7777); `MB_DB_PATH` env var picks the accounts DB.
+- **Per-user global chat mute** — the admin can turn ONE user's **global chat OFF** (the "swearing user" switch): control panel -> pick a player -> **Turn global chat OFF**. The flag lives in the accounts DB (`users.chat_muted`), so it survives restarts and reconnects.
+- The muted player is **told the moment it flips** ("An admin turned your global chat off." / "... back on."), and every global message they send is **blocked** with "Your global chat is disabled by an admin." — **table (local) chat and the game itself stay free**.
+- The panel marks muted players with **(chat off)** and offers the matching action (mute when open, unmute when muted) — on both the Android panel (menu -> Control Panel, also inside the table via **More options**) and the Windows **F11** panel.
+- Everything from v3.7 stays: **add / remove admin** (each with the ONE confirmation kick + kick sound), **temporary bans in minutes** with self-expiry and countdown in the ban list, **hardware-fingerprint bans** ("you are banned" on login AND register — a banned device cannot even create a new account), the **auto-admin first account**, the **unban sound heard by EVERYONE** on the server, and the simple server CLI (`MagicBattle.Server 7777`, `MB_DB_PATH` env var).
 
-**Windows variants**: `MagicBattle-Windows-v3.7.zip` = ReadyToRun single-file `MagicBattle.exe` (recommended; keep the SDL3/SDL3_mixer/codec DLLs and `prism.dll` next to it, `sounds/` is a plain folder — now including kick/ban/unban). `MagicBattle-Windows-NativeAOT-v3.7.zip` = the same game fully **NativeAOT**-compiled by the GitHub Actions `windows-native-aot` workflow on a Windows runner — same layout, smaller exe, no IL at all.
+**Windows variants**: `MagicBattle-Windows-v3.8.zip` = ReadyToRun single-file `MagicBattle.exe` (recommended; keep the SDL3/SDL3_mixer/codec DLLs and `prism.dll` next to it, `sounds/` is a plain folder). `MagicBattle-Windows-NativeAOT-v3.8.zip` = the same game fully **NativeAOT**-compiled by the GitHub Actions `windows-native-aot` workflow on a Windows runner — same layout, smaller exe, no IL at all.
 
 ## Install
 
