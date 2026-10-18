@@ -14,37 +14,29 @@ Since v3.3 every asset is verified with the **sha256 digest that the GitHub REST
 
 | Client | Since | Notes |
 |---|---|---|
-| **Android (Kotlin)** | v1.x | `MagicBattle-vX.Y.apk` — the original Kotlin app, versionCode 29 at v3.8; TalkBack + Prism speech; downloads and installs updates itself (resumable, digest-verified) |
-| **Windows (C# / .NET 10)** | v3.3 | `MagicBattle-Windows-vX.Y.zip` — SDL3 graphics + SDL3_mixer sound, Prism speech; v3.8 ships as a **ReadyToRun AOT single-file** exe PLUS a true **NativeAOT** build produced by the repo's GitHub Actions workflow |
+| **Android (Kotlin)** | v1.x | `MagicBattle-vX.Y.apk` — the original Kotlin app, versionCode 30 at v3.9; TalkBack + Prism speech; downloads and installs updates itself (resumable, digest-verified) |
+| **Windows (C# / .NET 10)** | v3.3 | `MagicBattle-Windows-NativeAOT-vX.Y.zip` — SDL3 graphics + SDL3_mixer sound, Prism speech; **NativeAOT single-file exe** built by the repo's GitHub Actions workflow (AOT-only since v3.9) |
 
-## Current release: v3.8
+## Current release: v3.9
 
 | Asset | Size | sha256 (GitHub API digest) |
 |---|---|---|
-| `MagicBattle-v3.8.apk` | 15.4 MB | `86981312d9addc6957ff2e4d90701ba7343bc87a69ccdc31948ac3eb18e4d717` |
-| `MagicBattle-Windows-v3.8.zip` | 16.5 MB | `e0113fdded1593406b73ad5a74b223ad7c1a56d78ac0741a93f32edf8568a3b0` |
-| `MagicBattle-Windows-NativeAOT-v3.8.zip` | 13.1 MB | `2155b5928aec4332aa500aec9fe911e77c6905f4d206ac9e46dbaf1afb355db8` |
+| `MagicBattle-v3.9.apk` | 15.4 MB | `666292cbfd91813d9385d834384a5bc12fee66eee6131c0820fcf9bbe43f0992` |
+| `MagicBattle-Windows-NativeAOT-v3.9.zip` | 13.3 MB | `4ed47bd4528c8e78c9f51e0cb0b92d7ffcf9562104b9eb4ebdba6e9b386651e8` |
 
-**v3.8 highlights**
+### Highlights of v3.9
 
-- **Per-user global chat mute** — the admin can turn ONE user's **global chat OFF** (the "swearing user" switch): control panel -> pick a player -> **Turn global chat OFF**. The flag lives in the accounts DB (`users.chat_muted`), so it survives restarts and reconnects.
-- The muted player is **told the moment it flips** ("An admin turned your global chat off." / "... back on."), and every global message they send is **blocked** with "Your global chat is disabled by an admin." — **table (local) chat and the game itself stay free**.
-- The panel marks muted players with **(chat off)** and offers the matching action (mute when open, unmute when muted) — on both the Android panel (menu -> Control Panel, also inside the table via **More options**) and the Windows **F11** panel.
-- Everything from v3.7 stays: **add / remove admin** (each with the ONE confirmation kick + kick sound), **temporary bans in minutes** with self-expiry and countdown in the ban list, **hardware-fingerprint bans** ("you are banned" on login AND register — a banned device cannot even create a new account), the **auto-admin first account**, the **unban sound heard by EVERYONE** on the server, and the simple server CLI (`MagicBattle.Server 7777`, `MB_DB_PATH` env var).
-
-**Windows variants**: `MagicBattle-Windows-v3.8.zip` = ReadyToRun single-file `MagicBattle.exe` (recommended; keep the SDL3/SDL3_mixer/codec DLLs and `prism.dll` next to it, `sounds/` is a plain folder). `MagicBattle-Windows-NativeAOT-v3.8.zip` = the same game fully **NativeAOT**-compiled by the GitHub Actions `windows-native-aot` workflow on a Windows runner — same layout, smaller exe, no IL at all.
-
-## Install
-
-### Android
-1. Download `MagicBattle-v3.7.apk` from the latest release (or let the installed app do it — it speaks the changelog, verifies the sha256 digest and resumes broken downloads).
-2. Allow "install unknown apps" for the source app if asked.
-3. Install — it updates the existing game in place.
-
-### Windows
-1. Download one of the two v3.7 Windows zips and unzip it anywhere.
-2. Run `MagicBattle.exe`. Keep the DLLs and the `sounds/` folder next to it.
-
-## Older releases
-
-Older tags (v1.x – v3.6) stay available in the Releases list. Since v3.3 the Windows client is the C# port; the v3.3/v3.4 Android APKs were the experimental C# build (versionCode 23/24) — since v3.5 the Android client is the original Kotlin app (versionCode 28 now), which is the recommended client.
+- The **offline packet** on every disconnect + a graceful logout ("X left
+  the game") — no more ghost presences.
+- A **ban anchors on EVERY hardware fingerprint** the account has ever
+  used — each device banned separately, no escape.
+- **Admin panel**: Add admin (search + accounts list) / Remove admin
+  (live search) / Online players / Banned / **Delete account** (confirm,
+  full DB removal).
+- **Kick returns to the main game menu** on both clients; Android chat
+  close returns to the exact screen (session stays alive).
+- **Windows**: first-letter menu navigation, no cut speech, chat echo
+  (F2 letters/words/off), caret reading with Left/Right ("blank" at the
+  end) and a real **updater** (download/extract/replace/close).
+- **AOT-only builds**: Windows NativeAOT from GitHub Actions + Linux
+  NativeAOT server (private `v3.9-server` release in the source repo).
